@@ -8,7 +8,8 @@
  */
 namespace Esperance;
 
-use \Esperance\Extension;
+use Esperance\Extension;
+use Dumpling\Dumpling;
 
 class Assertion
 {
@@ -23,6 +24,8 @@ class Assertion
 
     private $extension;
 
+    private $dumper;
+
     private $aliases = array(
         'equal'       => 'be',
         'throw'       => 'throwException',
@@ -34,10 +37,11 @@ class Assertion
         'lessThan'    => 'below',
     );
 
-    public function __construct($subject, $extension = NULL)
+    public function __construct($subject, $extension = NULL, $dumper = NULL)
     {
         $this->subject = $subject;
         $this->flags = array();
+        $this->dumper = $dumper ? $dumper : new Dumpling();
         $this->extension = $extension ? $extension : new Extension;
     }
 
@@ -259,7 +263,7 @@ class Assertion
 
     private function i($obj)
     {
-        return var_export($obj, true);
+        return $this->dumper->dump($obj);
     }
 
     protected function throwAssertionError($message)
