@@ -1,5 +1,5 @@
 {
-    "name": "esperance/esperance",
+    "name": "jacobstr/esperance",
     "description": "BDD style assertion library for PHP.",
     "keywords": ["bdd", "tdd", "assertion"],
     "license": "MIT",

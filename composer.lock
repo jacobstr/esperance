@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "0dbc351c24a77f5f7848922adf1b0a0b",
+    "hash": "c9c699a5263f8c8c4ade3be8804c69d1",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -51,12 +52,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jacobstr/dumpling.git",
-                "reference": "23bda27dee6d6dc8cef0bd98f6efd21ee8dff511"
+                "reference": "b66da47438277f641cd570eb8e2079df0c07f2bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jacobstr/dumpling/zipball/23bda27dee6d6dc8cef0bd98f6efd21ee8dff511",
-                "reference": "23bda27dee6d6dc8cef0bd98f6efd21ee8dff511",
+                "url": "https://api.github.com/repos/jacobstr/dumpling/zipball/b66da47438277f641cd570eb8e2079df0c07f2bb",
+                "reference": "b66da47438277f641cd570eb8e2079df0c07f2bb",
                 "shasum": ""
             },
             "require-dev": {
@@ -79,7 +80,7 @@
                 }
             ],
             "description": "Like print_r, but depth limited and cyclic reference safe.",
-            "time": "2014-05-09 06:43:09"
+            "time": "2014-05-10 03:22:52"
         }
     ],
     "packages-dev": [],
