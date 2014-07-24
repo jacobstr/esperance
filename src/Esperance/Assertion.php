@@ -20,6 +20,13 @@ class Assertion
      */
     private $subject;
 
+    /**
+     * Optional descriptive prefix.
+     *
+     * @var string
+     */
+    private $explanation;
+
     private $flags;
 
     private $extension;
@@ -101,12 +108,19 @@ class Assertion
         $this->extension->onAssertionFailure($callback);
     }
 
+    public function explain($string)
+    {
+        $this->explanation = $string;
+
+        return $this;
+    }
+
     public function be($obj)
     {
         $this->assert(
             $obj === $this->subject,
-            "expected {$this->i($this->subject)} to equal {$this->i($obj)}",
-            "expected {$this->i($this->subject)} to not equal {$this->i($obj)}"
+            $this->msg("expected {$this->i($this->subject)} to equal {$this->i($obj)}"),
+            $this->msg("expected {$this->i($this->subject)} to not equal {$this->i($obj)}")
         );
         return $this;
     }
@@ -115,8 +129,8 @@ class Assertion
     {
         return $this->assert(
             $this->subject == $obj,
-            "expected {$this->i($this->subject)} to sort of equal {$this->i($obj)}",
-            "expected {$this->i($this->subject)} to sort of not equal {$this->i($obj)}"
+            $this->msg("expected {$this->i($this->subject)} to sort of equal {$this->i($obj)}"),
+            $this->msg("expected {$this->i($this->subject)} to sort of not equal {$this->i($obj)}")
         );
     }
 
@@ -124,8 +138,8 @@ class Assertion
     {
         $this->assert(
             !!$this->subject,
-            "expected {$this->i($this->subject)} to be truthy",
-            "expected {$this->i($this->subject)} to be falsy"
+            $this->msg("expected {$this->i($this->subject)} to be truthy"),
+            $this->msg("expected {$this->i($this->subject)} to be falsy")
         );
     }
 
@@ -148,19 +162,23 @@ class Assertion
         if (is_null($klass)) {
             $this->assert(
                 $thrown,
-                'expected function to throw an exception',
-                'expected function not to throw an exception'
+                $this->msg('expected function to throw an exception'),
+                $this->msg('expected function not to throw an exception')
             );
         } else {
             $this->assert(
                 $thrown,
-                "expected function to throw {$klass}" .
-                ($thrownKlass ? " but got {$thrownKlass}" : ''),
-                "expected function not to throw {$klass}"
+                $this->msg(
+                  "expected function to throw {$klass}" .
+                  ($thrownKlass ? " but got {$thrownKlass}" : '')
+                ),
+                $this->msg("expected function not to throw {$klass}")
             );
         }
         if ($thrown && $expectedMessage && $message !== $expectedMessage) {
-            $this->throwAssertionError("expected exception message {$this->i($message)} to be {$this->i($expectedMessage)}");
+            $this->throwAssertionError($this->msg(
+                "expected exception message {$this->i($message)} to be {$this->i($expectedMessage)}"
+            ));
         }
     }
 
@@ -168,8 +186,8 @@ class Assertion
     {
         $this->assert(
             \is_callable($this->subject),
-            "expected {$this->i($this->subject)} to be callable",
-            "expected {$this->i($this->subject)} to not be callable"
+            $this->msg("expected {$this->i($this->subject)} to be callable"),
+            $this->msg("expected {$this->i($this->subject)} to not be callable")
         );
     }
 
@@ -180,15 +198,15 @@ class Assertion
 
             $this->assert(
                 \is_a($this->subject, $type),
-                "expected {$this->i($this->subject)} to be {$article} {$type}",
-                "expected {$this->i($this->subject)} not to be {$article} {$type}"
+                $this->msg("expected {$this->i($this->subject)} to be {$article} {$type}"),
+                $this->msg("expected {$this->i($this->subject)} not to be {$article} {$type}")
             );
         } else {
             $type = get_class($type);
             $this->assert(
                 \is_a($this->subject, $type),
-                "expected {$this->i($this->subject)} to be an instance of {$type}",
-                "expected {$this->i($this->subject)} not to be an instance of {$type}"
+                $this->msg("expected {$this->i($this->subject)} to be an instance of {$type}"),
+                $this->msg("expected {$this->i($this->subject)} not to be an instance of {$type}")
             );
         }
         return $this;
@@ -198,8 +216,8 @@ class Assertion
     {
         $this->assert(
             empty($this->subject),
-            "expected {$this->i($this->subject)} to be empty",
-            "expected {$this->i($this->subject)} to not be empty"
+            $this->msg("expected {$this->i($this->subject)} to be empty"),
+            $this->msg("expected {$this->i($this->subject)} to not be empty")
         );
         return $this;
     }
@@ -209,8 +227,8 @@ class Assertion
         $range = "{$start}..{$finish}";
         $this->assert(
             $this->subject >= $start && $this->subject <= $finish,
-            "expected {$this->i($this->subject)} to be within {$range}",
-            "expected {$this->i($this->subject)} to not be within {$range}"
+            $this->msg("expected {$this->i($this->subject)} to be within {$range}"),
+            $this->msg("expected {$this->i($this->subject)} to not be within {$range}")
         );
     }
 
@@ -218,8 +236,8 @@ class Assertion
     {
         $this->assert(
             $this->subject > $n,
-            "expected {$this->i($this->subject)} to be above {$this->i($n)}",
-            "expected {$this->i($this->subject)} to be below {$this->i($n)}"
+            $this->msg("expected {$this->i($this->subject)} to be above {$this->i($n)}"),
+            $this->msg("expected {$this->i($this->subject)} to be below {$this->i($n)}")
         );
         return $this;
     }
@@ -228,8 +246,8 @@ class Assertion
     {
         $this->assert(
             $this->subject < $n,
-            "expected {$this->i($this->subject)} to be below {$this->i($n)}",
-            "expected {$this->i($this->subject)} to be above {$this->i($n)}"
+            $this->msg("expected {$this->i($this->subject)} to be below {$this->i($n)}"),
+            $this->msg("expected {$this->i($this->subject)} to be above {$this->i($n)}")
         );
         return $this;
     }
@@ -238,8 +256,8 @@ class Assertion
     {
         $this->assert(
             preg_match($regexp, $this->subject),
-            "expected {$this->i($this->subject)} to match {$regexp}",
-            "expected {$this->i($this->subject)} not to match {$regexp}"
+            $this->msg("expected {$this->i($this->subject)} to match {$regexp}"),
+            $this->msg("expected {$this->i($this->subject)} not to match {$regexp}")
         );
         return $this;
     }
@@ -255,8 +273,8 @@ class Assertion
         }
         $this->assert(
             $len === $n,
-            "expected {$this->i($this->subject)} to have a length of {$this->i($n)} but got {$len}",
-            "expected {$this->i($this->subject)} to not have a length of {$len}"
+            $this->msg("expected {$this->i($this->subject)} to have a length of {$this->i($n)} but got {$len}"),
+            $this->msg("expected {$this->i($this->subject)} to not have a length of {$len}")
         );
         return $this;
     }
@@ -271,5 +289,17 @@ class Assertion
         $error = new Error($message);
         $this->extension->emitAssertionFailure(array($error));
         throw $error;
+    }
+
+    /**
+     * Formats an error message with additional information.
+     */
+    protected function msg($message)
+    {
+        if($this->explanation) {
+            return $this->explanation . ' : ' . $message;
+        } else {
+            return $message;
+        }
     }
 }

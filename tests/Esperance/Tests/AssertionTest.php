@@ -448,6 +448,18 @@ class AssertionTest extends \PHPUnit_Framework_TestCase
         $this->expect($emittedEvents)->to->be(array('before_assertion', 'assertion_failure'));
     }
 
+    /**
+     * @test
+     */
+    public function messages_should_include_optional_descriptions()
+    {
+        try {
+            $this->expect('abc')->explain('Deliberately incorrect length')->to->have->length(1);
+        } catch (\Esperance\Error $e) {
+            $this->expect($e->getMessage())->to->match('/^Deliberately incorrect length :.*/');
+        }
+    }
+
     public function expect($subject)
     {
         $assertion = new Assertion($subject);
