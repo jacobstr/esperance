@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d0b4c6c56350338ed7650f8e48f12046",
+    "hash": "9b682f080be42b2eb1e0e25f9ca57554",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -48,16 +48,16 @@
         },
         {
             "name": "jacobstr/dumpling",
-            "version": "v0.0.2",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jacobstr/dumpling.git",
-                "reference": "66d51d7a52bc705380e07bcfddbbee2c7e23b8e5"
+                "reference": "b66da47438277f641cd570eb8e2079df0c07f2bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jacobstr/dumpling/zipball/66d51d7a52bc705380e07bcfddbbee2c7e23b8e5",
-                "reference": "66d51d7a52bc705380e07bcfddbbee2c7e23b8e5",
+                "url": "https://api.github.com/repos/jacobstr/dumpling/zipball/b66da47438277f641cd570eb8e2079df0c07f2bb",
+                "reference": "b66da47438277f641cd570eb8e2079df0c07f2bb",
                 "shasum": ""
             },
             "require-dev": {
@@ -79,8 +79,8 @@
                     "email": "jacobstr@gmail.com"
                 }
             ],
-            "description": "Like print_r, but depth limited and cyclic dependency safe.",
-            "time": "2014-04-07 06:10:34"
+            "description": "Like print_r, but depth limited and cyclic reference safe.",
+            "time": "2014-05-10 03:22:52"
         }
     ],
     "packages-dev": [],
