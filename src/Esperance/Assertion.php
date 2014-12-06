@@ -33,6 +33,8 @@ class Assertion
 
     private $dumper;
 
+    private $matchers;
+
     private $aliases = array(
         'equal'       => 'be',
         'throw'       => 'throwException',
@@ -44,12 +46,22 @@ class Assertion
         'lessThan'    => 'below',
     );
 
-    public function __construct($subject, $extension = NULL, $dumper = NULL)
+    public function __construct($subject, $extension = null, $dumper = null, $matchers = array())
     {
         $this->subject = $subject;
         $this->flags = array();
         $this->dumper = $dumper ? $dumper : new Dumpling();
         $this->extension = $extension ? $extension : new Extension;
+        $this->matchers = array();
+
+        // Include some default matchers from the library.
+        $matchers = array_merge(array(new Resemble()), $matchers);
+
+        foreach ($matchers as $matcher) {
+            foreach ($matcher->getAliases() as $alias) {
+                $this->matchers[$alias] = $matcher;
+            }
+        }
     }
 
     public function __get($key)
@@ -64,10 +76,12 @@ class Assertion
 
     public function __call($method, $args)
     {
-        if (array_key_exists($method, $this->aliases)) {
+        if (array_key_exists($method, $this->matchers)) {
+            return $this->matchers[$method]($this, $args);
+        } else if (array_key_exists($method, $this->aliases)) {
             return call_user_func_array(array($this, $this->aliases[$method]), $args);
         } else {
-            throw new \BadMethodCallException("Undefined method {$this->i($method)} is called");
+            throw new \BadMethodCallException("undefined method {$this->i($method)} was called");
         }
     }
 
@@ -279,7 +293,7 @@ class Assertion
         return $this;
     }
 
-    private function i($obj)
+    public function i($obj)
     {
         return $this->dumper->dump($obj);
     }
